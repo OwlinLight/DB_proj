@@ -15,7 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MBGTest {
+
+
     public static void main(String[] args) throws IOException, XMLParserException, InvalidConfigurationException, SQLException, InterruptedException {
+//        generate();
+    }
+    @Test
+    public void generate() throws IOException, XMLParserException, InvalidConfigurationException, SQLException, InterruptedException {
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
         File configFile = new File("mbg.xml");
