@@ -6,7 +6,7 @@
     <%
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
-    <title>Title</title>
+    <title>校园科研互助系统</title>
     <link href="${APP_PATH}/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="${APP_PATH}/static/js/jquery-3.1.1.js"></script>
@@ -130,7 +130,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>SSM CRUD</h1>
+            <h1>校园科研互助系统</h1>
         </div>
     </div>
     <div class="row">
