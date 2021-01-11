@@ -52,4 +52,13 @@ public class EmployeeService {
         criteria.andEmpIdIn(ids);
         employeeMapper.deleteByExample(example);
     }
+
+    /**
+     * 根据姓名或id搜索员工
+     */
+    public List<Employee> getEmpByVague(String empName){
+        return employeeMapper.selectByVague(empName);
+    }
+
+
 }

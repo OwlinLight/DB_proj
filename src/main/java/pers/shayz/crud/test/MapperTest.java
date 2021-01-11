@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pers.shayz.crud.bean.Department;
 import pers.shayz.crud.bean.Employee;
 import pers.shayz.crud.dao.DepartmentMapper;
 import pers.shayz.crud.dao.EmployeeMapper;

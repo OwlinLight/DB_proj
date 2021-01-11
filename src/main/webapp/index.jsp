@@ -140,6 +140,16 @@
         </div>
     </div>
     <div class="row">
+        <%--    ------------查找框--------------   --%>
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="输入科研人员id或科研人员姓名" id="search_emp">
+                <span class="input-group-btn">
+                        <%-- 查找按钮 --%>
+                        <button class="btn btn-primary glyphicon glyphicon-search" type="button" id="search_btn">Search</button>
+                    </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
         <div class="col-md-12">
             <table class="table table table-striped table-hover" id="emps_table">
                 <thead>
@@ -208,6 +218,11 @@
             var genderTd = $("<td></td>").append(item.gender);
             var emailTd = $("<td></td>").append(item.email);
             var deptNameTd = $("<td></td>").append(item.department.deptName);
+            var detailBtn = $("<button></button>").addClass("btn btn-default btn-sm detail_btn")
+                .append($("<span></span>").addClass("glyphicon glyphicon-list"))
+                .append("详情");
+            detailBtn.attr("detail-id", item.empId);
+
             var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
                 .append($("<span></span>").addClass("glyphicon glyphicon-pencil"))
                 .append("编辑");
@@ -218,7 +233,7 @@
                 .append("删除");
             delBtn.attr("del-id", item.empId);
 
-            var btnTd = $("<td></td>").append(editBtn).append(" ").append(delBtn);
+            var btnTd = $("<td></td>").append(detailBtn).append(" ").append(editBtn).append(" ").append(delBtn);
             $("<tr></tr>")
                 .append(checkBoxTd)
                 .append(empIdTd)
@@ -450,6 +465,9 @@
         });
     });
 
+
+
+
     /**
      * 编辑按钮点击事件
      */
@@ -497,6 +515,15 @@
                 }
             });
         }
+    });
+
+    /**
+     * 详情按钮事件
+     */
+    $(document).on("click", ".detail_btn", function () {
+        var empId = $(this).attr("detail-id");
+        var url = "${APP_PATH}/detail/" + empId;
+        window.open(url);
     });
 
     /**
@@ -562,6 +589,102 @@
             });
         }
     });
+
+    //为搜索按钮绑定单击事件
+    $("#search_btn").click(function () {
+        //清空tbody，如果不清空，当页面刷新的时候新的数据不会覆盖旧数据，造成页面混乱
+        $("#emps_table tbody").empty();
+
+        //将搜索框中的内容保存到searchContent中
+        var searchContent = $("#search_emp").val();
+
+        console.log(searchContent);
+
+        $("#page_nav_area").empty();
+
+        //如果输入框中的内容为空的话，用to_page回到原本显示的界面。
+        if(searchContent == ""){
+            to_page(1);
+        }else{
+            //如果不为空的话，发送ajax请求
+            $.ajax({
+                url:"${APP_PATH}/empSearch",
+                type:"GET",
+                data:"content=" + searchContent,
+                success:function (res) {
+
+                    //显示搜索到的员工
+                    search_emps_table(res);
+                    //显示搜索页面的分页信息
+                    build_search_page_info(res);
+                }
+            });
+        }
+    })
+
+    // 解析并显示查询到的员工数据
+    function search_emps_table(res) {
+        //清空table表格，如果不清空，当页面刷新的时候新的数据不会覆盖旧数据，造成页面混乱
+        $("#emps_table tbody").empty();
+
+        //将查找出来的员工数据保存在empSearched中
+        var empSearched = res.extend.pageInfo.list;
+
+        //如果empSearch中的数据为空的话，就提示未找到
+        if(empSearched.length == 0){
+            $("<h5></h5>").append("").append("NOT FOUND")
+                .appendTo("#emps_table tbody");//将tr添加到tbody标签中
+        }else {
+
+            //遍历所有查询到的员工
+            $.each(empSearched, function (i, val) {
+                //在员工数据的最左边加上多选框
+                var checkBoxTd = $("<td><input type='checkbox' class='check_item'/></td>");
+
+                var empIdTd = $("<td></td>").append(empSearched[i].empId);
+                var empNameTd = $("<td></td>").append(empSearched[i].empName);
+                var genderTd = $("<td></td>").append(empSearched[i].gender == 'M' ? "男" : "女");
+                var emailTd = $("<td></td>").append(empSearched[i].email);
+                var deptNameTd = $("<td></td>").append(empSearched[i].department.deptName);
+
+                var detailBtn = $("<button></button>").addClass("btn btn-default btn-sm detail_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-list"))
+                    .append("详情");
+                detailBtn.attr("detail-id", empSearched[i].empId);
+
+                var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-pencil"))
+                    .append("编辑");
+                editBtn.attr("edit-id", empSearched[i].empId);
+
+                var delBtn = $("<button></button>").addClass("btn btn-danger btn-sm delete_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-trash"))
+                    .append("删除");
+                delBtn.attr("del-id", empSearched[i].empId);
+
+                var btnTd = $("<td></td>").append(detailBtn).append(" ").append(editBtn).append(" ").append(delBtn);
+                $("<tr></tr>")
+                    .append(checkBoxTd)
+                    .append(empIdTd)
+                    .append(empNameTd)
+                    .append(genderTd)
+                    .append(emailTd)
+                    .append(deptNameTd)
+                    .append(btnTd)
+                    .appendTo("#emps_table tbody");
+            })
+        }
+    }
+
+    // 解析并显示搜索页面的分页信息
+    function build_search_page_info(res) {
+        //清空分页文字信息，如果不清空，当页面刷新的时候新的数据不会覆盖旧数据，造成页面混乱
+        $("#page_info_area").empty();
+
+        $("#page_info_area").append("已查询到" + res.extend.pageInfo.total +"条记录。");
+
+    }
+
 </script>
 </body>
 </html>
