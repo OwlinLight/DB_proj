@@ -46,7 +46,7 @@
             <input type="checkbox" value="remember-me"> 记住密码
         </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" onclick = "window.location.href = 'index.jsp'">登录</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button" onclick = "window.location.href = 'index.jsp'">登录</button>
 
     <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
 </form>

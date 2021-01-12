@@ -34,32 +34,37 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="tbl_emp" domainObjectName="Employee"></table>
-        <table tableName="tbl_dept" domainObjectName="Department"></table>
-        <table tableName = "achievement" domainObjectName="Achievement"/>
-        <table tableName = "administrator" domainObjectName="Administrator"/>
-        <table tableName = "announcement" domainObjectName="Announcement"/>
-        <table tableName = "answer" domainObjectName="Answer"/>
-        <table tableName = "ask" domainObjectName="Ask"/>
-        <table tableName = "author_list" domainObjectName="Author_list"/>
-        <table tableName = "college" domainObjectName="College"/>
-        <table tableName = "company" domainObjectName="Company"/>
-        <table tableName = "educate" domainObjectName="Educate"/>
-        <table tableName = "field" domainObjectName="Field"/>
-        <table tableName = "follow_problem" domainObjectName="Follow_problem"/>
-        <table tableName = "follow_user" domainObjectName="Follow_user"/>
-        <table tableName = "label" domainObjectName="Label"/>
-        <table tableName = "label_field" domainObjectName="Label_field"/>
-        <table tableName = "paper" domainObjectName="Paper"/>
-        <table tableName = "patent" domainObjectName="Patent"/>
-        <table tableName = "problem" domainObjectName="Problem"/>
-        <table tableName = "respond" domainObjectName="Respond"/>
-        <table tableName = "sub_problem" domainObjectName="Sub_problem"/>
-        <table tableName = "teach" domainObjectName="Teach"/>
-        <table tableName = "textbook" domainObjectName="Textbook"/>
-        <table tableName = "university" domainObjectName="University"/>
-        <table tableName = "user" domainObjectName="User"/>
-        <table tableName = "user_achievement" domainObjectName="User_achievement"/>
-        <table tableName = "work" domainObjectName="Work"/>
+
+        <table tableName="tbl_paper" domainObjectName="ShowPaper"></table>
+        <table tableName="tbl_question" domainObjectName="ShowQ"></table>
+        <table tableName="tbl_answer" domainObjectName="ShowA"></table>
+
+<!--        <table tableName="tbl_emp" domainObjectName="Employee"></table>-->
+<!--        <table tableName="tbl_dept" domainObjectName="Department"></table>-->
+<!--        <table tableName = "achievement" domainObjectName="Achievement"/>-->
+<!--        <table tableName = "administrator" domainObjectName="Administrator"/>-->
+<!--        <table tableName = "announcement" domainObjectName="Announcement"/>-->
+<!--        <table tableName = "answer" domainObjectName="Answer"/>-->
+<!--        <table tableName = "ask" domainObjectName="Ask"/>-->
+<!--        <table tableName = "author_list" domainObjectName="Author_list"/>-->
+<!--        <table tableName = "college" domainObjectName="College"/>-->
+<!--        <table tableName = "company" domainObjectName="Company"/>-->
+<!--        <table tableName = "educate" domainObjectName="Educate"/>-->
+<!--        <table tableName = "field" domainObjectName="Field"/>-->
+<!--        <table tableName = "follow_problem" domainObjectName="Follow_problem"/>-->
+<!--        <table tableName = "follow_user" domainObjectName="Follow_user"/>-->
+<!--        <table tableName = "label" domainObjectName="Label"/>-->
+<!--        <table tableName = "label_field" domainObjectName="Label_field"/>-->
+<!--        <table tableName = "paper" domainObjectName="Paper"/>-->
+<!--        <table tableName = "patent" domainObjectName="Patent"/>-->
+<!--        <table tableName = "problem" domainObjectName="Problem"/>-->
+<!--        <table tableName = "respond" domainObjectName="Respond"/>-->
+<!--        <table tableName = "sub_problem" domainObjectName="Sub_problem"/>-->
+<!--        <table tableName = "teach" domainObjectName="Teach"/>-->
+<!--        <table tableName = "textbook" domainObjectName="Textbook"/>-->
+<!--        <table tableName = "university" domainObjectName="University"/>-->
+<!--        <table tableName = "user" domainObjectName="User"/>-->
+<!--        <table tableName = "user_achievement" domainObjectName="User_achievement"/>-->
+<!--        <table tableName = "work" domainObjectName="Work"/>-->
     </context>
 </generatorConfiguration>
