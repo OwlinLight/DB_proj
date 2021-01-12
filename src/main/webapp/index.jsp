@@ -135,6 +135,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-8">
+            <a class="btn btn-primary" id="next" href="detail.jsp">快进到下一页</a>
             <button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
             <button class="btn btn-danger" id="emp_delete_all_btn">删除</button>
         </div>

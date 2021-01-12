@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pers.shayz.crud.bean.Msg;
+import pers.shayz.crud.bean.ShowA;
 import pers.shayz.crud.bean.ShowQ;
-import pers.shayz.crud.service.ShowQService;
+import pers.shayz.crud.service.ShowAService;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ import java.util.List;
  * @author ZhouXiaoyu
  */
 @Controller
-public class QuestionController {
+public class AnswerController {
 
     @Autowired
-    ShowQService showQService;
+    ShowAService showAService;
 //
 //    @RequestMapping(value = "/A/{ids}", method = RequestMethod.DELETE)
 //    @ResponseBody
@@ -30,22 +31,27 @@ public class QuestionController {
 //            for(String string : str_ids){
 //                del_ids.add(Integer.parseInt(string));
 //            }
-//            showQService.deleteBatch(del_ids);
+//            showAService.deleteBatch(del_ids);
 //        }else {
 //            Integer id = Integer.parseInt(ids);
-//            showQService.deleteA(id);
+//            showAService.deleteA(id);
 //        }
 //        return Msg.success();
 //    }
 //
 //    @RequestMapping(value = "/A/{AId}", method = RequestMethod.PUT)
 //    @ResponseBody
-//    public Msg saveA(ShowQ showQ) {
-//        showQService.updateA(showQ);
+//    public Msg saveA(ShowA showA) {
+//        showAService.updateA(showA);
 //        return Msg.success();
 //    }
 //
-
+//    @RequestMapping(value = "/A/{id}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Msg getA(@PathVariable("id") Integer id) {
+//        ShowA showA = showAService.getA(id);
+//        return Msg.success().add("A", showA);
+//    }
 //
 //    @ResponseBody
 //    @RequestMapping("/checkuser")
@@ -56,7 +62,7 @@ public class QuestionController {
 //            return Msg.fail().add("va_msg", "名字必须是2-5个中文或者6-16位英文数字组合");
 //        }
 //
-//        boolean b = showQService.checkUser(AName);
+//        boolean b = showAService.checkUser(AName);
 //        if (b) {
 //            return Msg.success();
 //        } else {
@@ -66,7 +72,7 @@ public class QuestionController {
 //
 //    @RequestMapping(value = "/A", method = RequestMethod.POST)
 //    @ResponseBody
-//    public Msg saveA(@Valid ShowQ showQ, BindingResult result) {
+//    public Msg saveA(@Valid ShowA showA, BindingResult result) {
 //        if (result.hasErrors()) {
 //            Map<String, Object> map = new HashMap<>();
 //            List<FieldError> errors = result.getFieldErrors();
@@ -75,7 +81,7 @@ public class QuestionController {
 //            }
 //            return Msg.fail().add("errorFields", map);
 //        } else {
-//            showQService.saveA(showQ);
+//            showAService.saveA(showA);
 //            return Msg.success();
 //        }
 //    }
@@ -92,35 +98,28 @@ public class QuestionController {
 //    public Msg getAsWithJson(
 //            @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
 //        PageHelper.startPage(pn, 5);
-//        List<ShowQ> As = showQService.getAll();
+//        List<ShowA> As = showAService.getAll();
 //        PageInfo pageInfo = new PageInfo(As, 5);
 //
 //        return Msg.success().add("pageInfo", pageInfo);
 //    }
 
-    @RequestMapping(value = "/questions/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/answer/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Msg getQuestionsWithJsonById(
+    public Msg getAsWithJsonById(
             @RequestParam(value = "pn", defaultValue = "1") Integer pn,
             @PathVariable("id") Integer id) {
         PageHelper.startPage(pn, 5);
-        List<ShowQ> Qs = showQService.getAuthorAll(id);
+        List<ShowA> Qs = showAService.getQuestionAll(id);
         PageInfo pageInfo = new PageInfo(Qs, 5);
+
         return Msg.success().add("pageInfo", pageInfo);
     }
 
-    @RequestMapping(value = "/question/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/answer/{AId}", method = RequestMethod.PUT)
     @ResponseBody
-    public Msg getQuestions(@PathVariable("id") Integer id) {
-        ShowQ showQ = showQService.getQ(id);
-        return Msg.success().add("A", showQ);
-    }
-
-    @RequestMapping(value = "/question/{AId}", method = RequestMethod.PUT)
-    @ResponseBody
-    public Msg saveQuestion(ShowQ showQ) {
-        showQService.updateQ(showQ);
+    public Msg saveAnswer(ShowA showA) {
+        showAService.updateA(showA);
         return Msg.success();
     }
-
 }
