@@ -5,11 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pers.shayz.crud.bean.Employee;
 import pers.shayz.crud.bean.ShowPaper;
 import pers.shayz.crud.bean.Msg;
+import pers.shayz.crud.service.EmployeeService;
 import pers.shayz.crud.service.ShowPaperService;
 
 import javax.validation.Valid;
@@ -26,6 +29,8 @@ public class PaperController {
 
     @Autowired
     ShowPaperService showPaperService;
+    @Autowired
+    EmployeeService employeeService;
 //
 //    @RequestMapping(value = "/paper/{ids}", method = RequestMethod.DELETE)
 //    @ResponseBody
@@ -98,7 +103,7 @@ public class PaperController {
      * @param pn
      * @return
      */
-    @RequestMapping("/papers")
+    @RequestMapping("/papers/all")
     @ResponseBody
     public Msg getPapersWithJson(
             @RequestParam(value = "pn", defaultValue = "1") Integer pn) {
@@ -109,7 +114,7 @@ public class PaperController {
         return Msg.success().add("pageInfo", pageInfo);
     }
 
-    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/papers/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Msg getPapersWithJsonById(
             @RequestParam(value = "pn", defaultValue = "1") Integer pn,

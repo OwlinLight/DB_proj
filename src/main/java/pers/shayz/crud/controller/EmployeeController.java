@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pers.shayz.crud.bean.Employee;
 import pers.shayz.crud.bean.Msg;
 import pers.shayz.crud.service.EmployeeService;
@@ -136,6 +138,17 @@ public class EmployeeController {
 
         return Msg.success().add("pageInfo", pageInfo);
     }
+
+    //直接redirect无法转发view
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    public ModelAndView getEmp(@PathVariable("id") Integer id,
+                               ModelMap modelMap) {
+        modelMap.put("authorId", id);
+//        return "forward:/detail.jsp";
+        return new ModelAndView("forward:/detail.jsp", modelMap);
+    }
+
+
 
 /**
  * 旧的返回数据的方法

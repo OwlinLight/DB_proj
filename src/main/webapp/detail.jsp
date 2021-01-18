@@ -17,7 +17,8 @@
     <title>Album example · Bootstrap v5.0</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
-
+    <script src="${APP_PATH}/static/dist/js/jquery.min.js"></script>
+    <script src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 
     <!-- Bootstrap core CSS -->
@@ -81,15 +82,16 @@
 </header>
 
 <main>
-
+<div class="container">
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">李伟</h1>
-                <p class="lead text-muted">李伟的个人信息</p>
+
+                <h1 class="fw-light" id = "name">姓名：</h1>
+                <p class="lead text-muted" id = "email">邮箱号：</p>
                 <p>
                     <a href="paper.jsp" class="btn btn-primary my-2">向他提问</a>
-                    <a href="index.jsp" class="btn btn-secondary my-2">回到人员查询页面</a>
+                    <a href="/index.jsp" class="btn btn-secondary my-2">回到人员查询页面</a>
                 </p>
             </div>
         </div>
@@ -115,7 +117,15 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6" id="page_info_area">
 
+        </div>
+        <div class="col-md-6" id="page_nav_area">
+
+        </div>
+    </div>
+</div>
 </main>
 
 <footer class="text-muted py-5">
@@ -127,9 +137,54 @@
         <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
     </div>
 </footer>
+<%--<script src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>--%>
+
+<script >
+
+    //解析个人信息
+    $(document).ready(function () {
+        getAuthorInfo(${authorId});
+    });
 
 
-<script src="../assets/dist/js/bootstrap.bundle.min.js">
+
+    function getAuthorInfo(authorId) {
+        $.ajax({
+            url: "${APP_PATH}/emp/"+authorId,
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                var emp = result.extend.emp;
+                buildInfo(emp);
+            }
+        });
+    }
+
+    function buildInfo(emp){
+        $('#name').append(emp.empName);
+        $('#email').append(emp.email);
+    }
+
+
+    var totalRecord, currentPage;
+
+    $(function () {
+        to_page(1);
+    });
+
+    function to_page(pn) {
+        $.ajax({
+            url: "${APP_PATH}/papers/${authorId}",
+            data: "pn=" + pn,
+            type: "GET",
+            success: function (result) {
+                console.log(result);
+                build_emps_table(result);
+                build_page_info(result);
+                build_page_nav(result)
+            }
+        });
+    }
 
 
     /**
@@ -166,12 +221,94 @@
                 .append(empIdTd)
                 .append(empNameTd)
                 .append(genderTd)
-                .append(emailTd)
-                .append(deptNameTd)
                 .append(btnTd)
                 .appendTo("#emps_table tbody");
         });
     }
+
+
+        /**
+         * 解析显示分页信息
+         * @param result
+         */
+        function build_page_info(result) {
+
+            $("#page_info_area").empty();
+
+            $("#page_info_area").append("当前"
+                + result.extend.pageInfo.pageNum
+                + "第页,总"
+                + result.extend.pageInfo.pages
+                + "页,总共"
+                + result.extend.pageInfo.total
+                + "有条记录")
+            totalRecord = result.extend.pageInfo.total;
+            currentPage = result.extend.pageInfo.pageNum;
+        }
+
+        /**
+         * 解析显示分页条
+         * @param result
+         */
+        function build_page_nav(result) {
+
+            $("#page_nav_area").empty();
+
+            var ul = $("<ul></ul>").addClass("pagination");
+
+            var firstPageLi = $("<li></li>").addClass("page-item")
+                .append($("<a></a>").addClass("page-link").append("首页").attr("href", "#"));
+            var prePageLi = $("<li></li>").addClass("page-item")
+                .append($("<a></a>").addClass("page-link").append("&laquo;"));
+            if (!result.extend.pageInfo.hasPreviousPage) {
+                firstPageLi.addClass("disabled");
+                prePageLi.addClass("disabled");
+            } else {
+                firstPageLi.click(function () {
+                    to_page(1);
+                });
+                prePageLi.click(function () {
+                    to_page(result.extend.pageInfo.pageNum - 1);
+                });
+            }
+
+
+            var nextPageLi = $("<li></li>").addClass("page-item")
+                .append($("<a></a>").addClass("page-link").append("&raquo;"));
+            var lastPageLi = $("<li></li>").addClass("page-item")
+                .append($("<a></a>").addClass("page-link").append("尾页").attr("href", "#"));
+            if (!result.extend.pageInfo.hasNextPage) {
+                lastPageLi.addClass("disabled");
+                nextPageLi.addClass("disabled");
+            } else {
+                lastPageLi.click(function () {
+                    to_page(result.extend.pageInfo.pages);
+                });
+                nextPageLi.click(function () {
+                    to_page(result.extend.pageInfo.pageNum + 1);
+                });
+            }
+
+            ul.append(firstPageLi).append(prePageLi);
+
+            $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
+                var numLi = $("<li></li>").addClass("page-item")
+                    .append($("<a></a>").addClass("page-link").append(item));
+                if (result.extend.pageInfo.pageNum == item) {
+                    numLi.addClass("active");
+                }
+                numLi.click(function () {
+                    to_page(item)
+                });
+                ul.append(numLi);
+            });
+
+            ul.append(nextPageLi).append(lastPageLi);
+
+            var navEle = $("<nav></nav>").append(ul);
+
+            $("#page_nav_area").append(navEle);
+        }
 
 </script>
 
